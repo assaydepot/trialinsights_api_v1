@@ -82,9 +82,6 @@ Returns an array of trial IDs meeting search criteria. The query object allows s
 // This query will find all trial documents matching either find criteria. It will the remove docs that fall outside the specified
 //date_range and docs whose trials are neither "phase 2" or "phase 3". The resulting documents will be ordered according to their
 // proximity to Boston, MA.
-
-// The result is an array of document IDS
-["nct001234","nct005678"]
 ```
 The /trials endpoint also includes important information in the response header, including cache "ID" and page Info properties.
 
@@ -96,6 +93,8 @@ The page info header includes values or page, pageSize, and total trial document
 
 ### POST /trials?page={page}
 Returns an array of requested trial documents.
+
+Post a query object (specified above) to the /trials enpoint to fetch trial documents.
 
 Clients implement "page next" and "page previous" functionality by providing the page number (zero based) in the query string. The request header "x-lifescience-page-info" provides an object with the _page_, _pageSize_ and _total_ number of documents in the collection. For now, the _pageSize_ is fixed at 100. 
 
