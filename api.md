@@ -1,26 +1,3 @@
-# TrialIO API
-
-## Patient Report
-
-### POST /api/v1/publication
-
-	// example body
-	{
-		values: [{name:"other_terms", value:"breast cancer"}, {name:"other_terms", value: "kras|egfr"}],
-		location: {country: "united states", city: "worcester", state: "massachusetts"},
-		sort: "distance",
-		output: "html",
-		start: 0,
-		length: 100,
-		api_key: "some_key"
-	}
-	
-	// => response
-	{
-		html: "<html ...",
-		queryId: "unique identifier"
-	}
-
 **Printable Referral Report**
 ----
 Returns HTML or JSON list of trials for given disease and geographic location.
@@ -88,3 +65,27 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 * **Notes:**
 
   <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
+  
+  
+  # TrialIO API
+
+## Patient Report
+
+### POST /api/v1/publication
+
+	// example body
+	{
+		values: [{name:"other_terms", value:"breast cancer"}, {name:"other_terms", value: "kras|egfr"}],
+		location: {country: "united states", city: "worcester", state: "massachusetts"},
+		sort: "distance",
+		output: "html",
+		start: 0,
+		length: 100,
+		api_key: "some_key"
+	}
+	
+	// => response
+	{
+		html: "<html ...",
+		queryId: "unique identifier"
+	}
