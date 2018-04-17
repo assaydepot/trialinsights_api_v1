@@ -33,7 +33,7 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 	`output=[string either "html" or "json"]`
 
 ```
-// example body search "breast cancer" and filter for keywords "egfr OR kras"
+// example POST body: will search trials for "breast cancer" and filter for keywords "egfr OR kras" within 200 miles of Worcester Ma.
 {
 	values: ["breast cancer", "egfr|kras"],
 	location: {country: "united states", city: "worcester", state: "massachusetts"},
@@ -45,21 +45,45 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 ```	
 
 * **Success Response:**
+
 The successful response includes either the JSON or formatted HTML string. The `recordsTotal` is the number of trials found _before_ any subsequent filters are applied. `recordsFiltered` is the number of remaining trials _after_ filtering. `sitesAvailable` are the number of trial-site pairs since a given trial can have zero or more sites connected to it.
 
 The geographic sort is applied _after_ all filters are applied. The response includes trials that are found within 200 miles (350kM) of the reference location specified.
 
 The `sitesAvailable` figure is the limit for paging. 
+
+All content-type response headers are 'application/json'.
+
 ```
-// => response
+// => HTML response
 {
 	html: "<html ...",
 	queryId: "unique identifier",
 	recordsTotal: 1627,
 	recordsFiltered: 301,
-	sitesAvailable: 287
+	sitesAvailable: 287,
+	start: 0,
+	length: 100
 }
 ```
+
+```
+// => JSON response
+{
+	json: {
+		location: {country:"united states", city:"worcester", state:"massachusetts"},
+		pretty: '( "breast cancer" ) AND ( "egfr" OR "kras" )',
+		trials: [{ trial 1}, {trial 2} ...]
+	},
+	queryId: "unique identifier",
+	recordsTotal: 1627,
+	recordsFiltered: 301,
+	sitesAvailable: 287,
+	start: 0,
+	length: 100
+}
+```
+
 
   * **Code:** 201 <br />
     **Content:**
@@ -77,27 +101,32 @@ The `sitesAvailable` figure is the limit for paging.
 
 * **Sample Call:**
 
-  <_Just a sample call to your endpoint in a runnable format ($.ajax call or a curl request) - this makes life easier and more predictable._> 
+```
+	$.ajax({
+		url: "https://app.trialio.com/api/v1/publications",
+		dataType: "json",
+		type : "POST",
+		data: {
+			values: ["breast cancer", "egfr|kras"],
+			location: {country: "united states", city: "worcester", state: "massachusetts"},
+			output: "html",
+			start: 0,
+			length: 100,
+			api_key: "abc0123456789xyz"		
+		},
+		success : function(r) {
+			console.log(r);
+		}
+	});
+```
 
 * **Notes:**
 
-  <_This is where all uncertainties, commentary, discussion etc. can go. I recommend timestamping and identifying oneself when leaving comments here._> 
-  
-  
-  # TrialIO API
+- April 17, 2018
 
-## Patient Report
+The *api_key* is acquired manually.
 
-### POST /api/v1/publication
+The requestors logo can be substituted for the TrialIO logo in the HTML and PDF versions by prior arrangement.
 
-	// example body
-	{
-		values: [{name:"other_terms", value:"breast cancer"}, {name:"other_terms", value: "kras|egfr"}],
-		location: {country: "united states", city: "worcester", state: "massachusetts"},
-		sort: "distance",
-		output: "html",
-		start: 0,
-		length: 100,
-		api_key: "some_key"
-	}
-	
+The requestors created by *name* and *affiliation* can be added to the request if HTML or PDF responses are requested. Otherwise, the user and affiliation of the owner of the *api_key* will be used for those outputs.
+
