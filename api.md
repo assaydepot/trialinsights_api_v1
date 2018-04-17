@@ -19,44 +19,56 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 	**Required:**
 
 	`values=[ array of query strings ]`
+	
 	`api_key=[string provided by TrialIO]`
 		
 	**Optional**
 	
-	`location={ object containing _country_, _city_, _state_ properties}`
+	`location={ object containing country, city, state properties}`
+	
 	`start=[integer first record]`
+	
 	`length=[integer length of page requested]`
+	
 	`output=[string allowed values "html" or "json"]`
-	
-	// example body
-	{
-		values: ["breast cancer", "egfr|kras"],
-		location: {country: "united states", city: "worcester", state: "massachusetts"},
-		output: "html",
-		start: 0,
-		length: 100,
-		api_key: "abc0123456789xyz"
-	}
-	
+
+```
+// example body search "breast cancer" and filter for keywords "egfr OR kras"
+{
+	values: ["breast cancer", "egfr|kras"],
+	location: {country: "united states", city: "worcester", state: "massachusetts"},
+	output: "html",
+	start: 0,
+	length: 100,
+	api_key: "abc0123456789xyz"
+}
+```	
 
 * **Success Response:**
-  
-  <_What should the status code be on success and is there any returned data? This is useful when people need to to know what their callbacks should expect!_>
 
-  * **Code:** 200 <br />
-    **Content:** `{ id : 12 }`
+```
+// => response
+{
+	html: "<html ...",
+	queryId: "unique identifier"
+}
+```
+
+  * **Code:** 201 <br />
+    **Content:**
+    	`{ html: "<html ...", queryId: "unique identifier"}`
  
 * **Error Response:**
 
   <_Most endpoints will have many ways they can fail. From unauthorized access, to wrongful parameters etc. All of those should be liste d here. It might seem repetitive, but it helps prevent assumptions from being made where they should be._>
 
   * **Code:** 401 UNAUTHORIZED <br />
-    **Content:** `{ error : "Log in" }`
+    **Content:** `{ error : "Authentication Failed." }`
 
   OR
 
   * **Code:** 422 UNPROCESSABLE ENTRY <br />
-    **Content:** `{ error : "Email Invalid" }`
+    **Content:** `{ error : "Invalid Request", message: "<property name> not recognized." }`
 
 * **Sample Call:**
 
@@ -84,8 +96,3 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 		api_key: "some_key"
 	}
 	
-	// => response
-	{
-		html: "<html ...",
-		queryId: "unique identifier"
-	}
