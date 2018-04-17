@@ -46,7 +46,7 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 
 * **Success Response:**
 
-The successful response includes either the JSON or formatted HTML string. The `recordsTotal` is the number of trials found _before_ any subsequent filters are applied. `recordsFiltered` is the number of remaining trials _after_ filtering. `sitesAvailable` are the number of trial-site pairs since a given trial can have zero or more sites connected to it.
+The successful response is a JSON object. The object includes either the JSON or formatted HTML string as requested. The `recordsTotal` is the number of trials found _before_ any subsequent filters are applied. `recordsFiltered` is the number of remaining trials _after_ filtering. `sitesAvailable` are the number of trial-site pairs since a given trial can have zero or more sites connected to it.
 
 The geographic sort is applied _after_ all filters are applied. The response includes trials that are found within 200 miles (350kM) of the reference location specified.
 
