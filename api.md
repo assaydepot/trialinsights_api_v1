@@ -1,6 +1,6 @@
 **Printable Referral Report**
 ----
-Returns HTML or JSON list of trials for given disease and geographic location.
+Returns HTML, PDF, or JSON list of trials for given disease and geographic location.
 
 * **URL**
 
