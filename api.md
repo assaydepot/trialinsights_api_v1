@@ -126,7 +126,7 @@ All content-type response headers are 'application/json'.
 	});
 ```
 
-* **Notes:**
+**Notes:**
 
 - April 17, 2018
 
@@ -134,7 +134,7 @@ The *api_key* is acquired manually.
 
 The requestors logo can be substituted for the TrialIO logo in the HTML and PDF versions by prior arrangement.
 
-The requestors created by *name* and *affiliation* can be added to the request if HTML or PDF responses are requested. Otherwise, the user and affiliation of the owner of the *api_key* will be used for those outputs.
+The requestors *name* and *affiliation* used in the report can be added to the request if HTML or PDF responses are requested. Otherwise, the user and affiliation of the owner of the *api_key* will be used for those outputs.
 
 If an unrecognized country/city/state is requested, the location search will not work. An API for confirming coordinates is planned.
 
