@@ -20,6 +20,10 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 
 	`values=[ array of query strings ]`
 	
+Filters are applied sequentialy with the initial filter operating on the entire trials corpus and subsequent filters applied to the prior result. Thus each subsequent term is a logical "AND" with the prior result. 
+
+Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
+	
 	`api_key=[string provided by TrialIO]`
 		
 	**Optional**
@@ -129,4 +133,7 @@ The *api_key* is acquired manually.
 The requestors logo can be substituted for the TrialIO logo in the HTML and PDF versions by prior arrangement.
 
 The requestors created by *name* and *affiliation* can be added to the request if HTML or PDF responses are requested. Otherwise, the user and affiliation of the owner of the *api_key* will be used for those outputs.
+
+If an unrecognized country/city/state is requested, the location search will not work. An API for confirming coordinates is planned.
+
 
