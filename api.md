@@ -30,7 +30,7 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 	
 	`length=[integer length of page requested]`
 	
-	`output=[string allowed values "html" or "json"]`
+	`output=[string either "html" or "json"]`
 
 ```
 // example body search "breast cancer" and filter for keywords "egfr OR kras"
@@ -45,12 +45,19 @@ Returns HTML or JSON list of trials for given disease and geographic location.
 ```	
 
 * **Success Response:**
+The successful response includes either the JSON or formatted HTML string. The `recordsTotal` is the number of trials found _before_ any subsequent filters are applied. `recordsFiltered` is the number of remaining trials _after_ filtering. `sitesAvailable` are the number of trial-site pairs since a given trial can have zero or more sites connected to it.
 
+The geographic sort is applied _after_ all filters are applied. The response includes trials that are found within 200 miles (350kM) of the reference location specified.
+
+The `sitesAvailable` figure is the limit for paging. 
 ```
 // => response
 {
 	html: "<html ...",
-	queryId: "unique identifier"
+	queryId: "unique identifier",
+	recordsTotal: 1627,
+	recordsFiltered: 301,
+	sitesAvailable: 287
 }
 ```
 
@@ -59,8 +66,6 @@ Returns HTML or JSON list of trials for given disease and geographic location.
     	`{ html: "<html ...", queryId: "unique identifier"}`
  
 * **Error Response:**
-
-  <_Most endpoints will have many ways they can fail. From unauthorized access, to wrongful parameters etc. All of those should be liste d here. It might seem repetitive, but it helps prevent assumptions from being made where they should be._>
 
   * **Code:** 401 UNAUTHORIZED <br />
     **Content:** `{ error : "Authentication Failed." }`
