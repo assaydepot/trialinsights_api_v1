@@ -47,10 +47,11 @@ length=[integer length of page requested]
 output=[string either "html" or "json"]
 ```
 
+* **Example**
 ```
 // example POST body: will search trials for "breast cancer" and filter for keywords "egfr OR kras" within 200 miles of Worcester Ma.
 {
-	values: ["breast cancer", "egfr|kras"],
+	values: [{name: "other_terms", value: "breast cancer"},{name: "other_terms", value: "egfr|kras"}],
 	location: {country: "united states", city: "worcester", state: "massachusetts"},
 	output: "html",
 	start: 0,
