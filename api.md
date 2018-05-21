@@ -138,6 +138,10 @@ All content-type response headers are 'application/json'.
 
 **Notes:**
 
+- May 21, 2018
+
+The `values` property is defined to be an array of `name/value` pairs.
+
 - April 17, 2018
 
 The *api_key* is acquired manually.
