@@ -30,7 +30,7 @@ Filters are applied sequentialy with the initial filter operating on the entire 
 
 Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
 	
-	api_key=[string provided by TrialIO]
+	`api_key=[string provided by TrialIO]`
 	
 Supplied by TrialIO.
 		
