@@ -123,7 +123,7 @@ All content-type response headers are 'application/json'.
 		dataType: "json",
 		type : "POST",
 		data: {
-			values: ["breast cancer", "egfr|kras"],
+			values: [{name: "other_terms", value: "breast cancer"},{name: "other_terms", value: "egfr|kras"}],
 			location: {country: "united states", city: "worcester", state: "massachusetts"},
 			output: "html",
 			start: 0,
