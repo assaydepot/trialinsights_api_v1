@@ -18,20 +18,24 @@ Returns HTML, PDF, or JSON list of trials for given disease and geographic locat
 
 	**Required:**
 
-	`values=[{
+```
+	values=[{
 		name: "diseases",
 		value: "lung cancer"
 	},{
 		name: "overall_status",
 		value: "recruiting"
-	}]`
+	}];
+```
 	
 Filters are applied sequentialy with the initial filter operating on the entire trials corpus and subsequent filters applied to the prior result. Thus each subsequent term is a logical "AND" with the prior term. 
 
 Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
-	
-	`api_key=[string provided by TrialIO]`
-	
+
+```
+api_key=[string provided by TrialIO]
+```
+
 Supplied by TrialIO.
 		
 * **Optional**
