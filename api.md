@@ -31,20 +31,38 @@ Create portfolio of clinical trial queries.
 	api_key: 'string'
 }
 ```
-The `values` property describes the filters to apply.
+`name` is a string describing the query.
+
+`description` is an optional string with additional information to be shown on the portfolio landing page.
+
+`values` is a required property describes the filters to apply when searching. It is an array where each element of the array is an object with two properties: `name` and `value`.
+
+The `name` describes _where_ to search in the trial document.
+
+The `value` describes _what_ to search. Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
 
 Filters are applied sequentialy with the initial filter operating on the entire trials corpus and subsequent filters applied to the prior result. Thus each subsequent term is a logical "AND" with the prior term. 
 
-Available values for the `name` property are: `other_terms, diseases, interventions, condition, condition_browse, keyword, drug, target, biomarker, lead_sponsor`. Using `other_terms` for `name` will search *all* fields listed here, plus the `brief_title` and `brief_summary` sections of the trial document. 
+Available values for the `name` property are: 
 
+```
+other_terms
+diseases
+interventions
+condition
+condition_browse
+keyword
+drug
+target
+biomarker
+lead_sponsor
+```
 
-__Using any value other than `other_terms` will limit the search to only that field. This usually results in fewer, more specific results for the given query.__
+Using `other_terms` for `name` will search *all* fields listed here, plus the `brief_title` and `brief_summary` sections of the trial document. 
 
+Using any value other than `other_terms` will limit the search to only that field. This usually results in fewer, more specific results for the given query.
 
-__To search for trial sponsors you must use `lead_sponsor` as the value for `name`.__
-
-
-Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
+To search for trial sponsors you must use `lead_sponsor` as the value for `name`.
 
 The `api_key` is a string supplied by TrialIO.
 
