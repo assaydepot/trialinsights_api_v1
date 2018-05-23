@@ -28,6 +28,7 @@ Create portfolio of clinical trial queries.
 	description: 'string',
 	values: [{name: 'other_terms', value:'amnesia'}...],
 	portfolio: 'string',
+	feeds: 'private',
 	api_key: 'string'
 }
 ```
@@ -64,14 +65,14 @@ Using any value other than `other_terms` will limit the search to only that fiel
 
 To search for trial sponsors you must use `lead_sponsor` as the value for `name`.
 
+The `feeds` optional property indicates whether to keep the portfolio private to the requestor, or allow other members of the group to access it from the TrialIO app.
+
+Unless `feeds:'private'` option is provided, the portfolio will be visible to the owner creating the portfolio and members of his group. 
+
+
 The `api_key` is a string supplied by TrialIO.
 
-**Optional:**
 
-```
-feeds: 'private'
-```
-Unless `feeds:'private'` option is provided, the portfolio will be visible to the owner creating the portfolio and members of his group. 
 
 * **Success Response:**
 
