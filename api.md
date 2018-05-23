@@ -37,9 +37,12 @@ Filters are applied sequentialy with the initial filter operating on the entire 
 
 Available values for the `name` property are: `other_terms, diseases, interventions, condition, condition_browse, keyword, drug, target, biomarker, lead_sponsor`. Using `other_terms` for `name` will search *all* fields listed here, plus the `brief_title` and `brief_summary` sections of the trial document. 
 
+
 __Using any value other than `other_terms` will limit the search to only that field. This usually results in fewer, more specific results for the given query.__
 
+
 __To search for trial sponsors you must use `lead_sponsor` as the value for `name`.__
+
 
 Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
 
