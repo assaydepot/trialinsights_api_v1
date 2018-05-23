@@ -1,3 +1,102 @@
+**Create Portfolio**
+----
+Create portfolio of clinical trial queries.
+* **URL**
+
+  /api/v1/portfolio
+
+* **Method**
+
+  POST
+  
+*  **URL Params**
+
+	None.
+
+* **Data Params**
+
+**Required:**
+
+```
+{
+	name: 'string',
+	description: 'string',
+	values: [{name: 'other_terms', value:'amnesia'}...],
+	portfolio: 'string',
+	api_key: 'string'
+}
+```
+Filters are applied sequentialy with the initial filter operating on the entire trials corpus and subsequent filters applied to the prior result. Thus each subsequent term is a logical "AND" with the prior term. 
+
+Strings can be javascript regular expressions, i.e., `kras|egfr` or simple boolean expressions `"kras" or "egfr"`. Unless otherwise specified multiple words such as "breast cancer" are searched as phrases.
+
+The `api_key` is a string supplied by TrialIO.
+
+	**Optional:**
+```
+feeds: 'private'
+```
+Unless `feeds:'private'` option is provided, the portfolio will be visible to the owner creating the portfolio and members of his group. 
+
+* **Success Response:**
+
+The successful response is a JSON object with the identifier of the generated query. 
+
+```
+{id: 'string'}
+```
+Upon entering the TrialIO web application, users with privilege to this portfolio can navigate to the portfolio using the dropdown widget on the `Content` page of the app.
+
+* **Error Response:**
+
+An error response will include a statusCode >= 400 and a JSON object with `error` and `message` properties.
+
+```
+{error: 'failed', message:'Request denied.'}
+```
+
+**Delete Portfolio**
+----
+Create portfolio of clinical trial queries.
+* **URL**
+
+  /api/v1/portfolio
+
+* **Method**
+
+  DELETE
+  
+*  **URL Params**
+
+	?api_key=key&portfolio=name
+
+The `api_key` is a string supplied by TrialIO.
+
+The `portfolio` is a string name of the portfolio to remove.
+
+* **Data Params**
+
+	None.
+
+* **Success Response:**
+
+The successful response is a JSON object with two properties: `ok` and `deleted`.
+
+```
+{ok: true, deleted: 17}
+```
+
+* **Error Response:**
+
+An error response will include a statusCode >= 400 and a JSON object with `error` and `message` properties.
+
+```
+{error: 'failed', message:'Request denied.'}
+```
+
+
+
+
 **Printable Referral Report**
 ----
 Returns HTML, PDF, or JSON list of trials for given disease and geographic location.
@@ -16,7 +115,7 @@ Returns HTML, PDF, or JSON list of trials for given disease and geographic locat
 
 * **Data Params**
 
-	**Required:**
+**Required:**
 
 ```
 values=[{
