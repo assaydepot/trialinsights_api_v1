@@ -1,8 +1,8 @@
 - [Portfolio](#portfolio)
-- [Patient Report](#patient_report)
+- [Patient Report](#patient report)
 
 
-## Portfolio
+# Portfolio
 **Create Portfolio**
 ----
 Create portfolio of clinical trial queries.
@@ -101,7 +101,7 @@ An error response will include a statusCode >= 400 and a JSON object with `error
 
 
 
-## Patient Report
+# Patient Report
 **Printable Referral Report**
 ----
 Returns HTML, PDF, or JSON list of trials for given disease and geographic location.
