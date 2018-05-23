@@ -1,5 +1,5 @@
 - [Portfolio](#portfolio)
-- [Patient Report](#patient report)
+- [Patient Report](#patient_report)
 
 
 # Portfolio
