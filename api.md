@@ -71,10 +71,6 @@ Unless `feeds:'private'` option is provided, the portfolio will be visible to th
 
 The `api_key` is a string supplied by TrialIO.
 
-An sample array of POST objects is found [here](https://raw.githubusercontent.com/rranauro/trialio/master/rare_disease.json)
-
-> Remember: The endpoint is asynchronous so that each request should receive its response before sending the next request.
-
 * **Success Response:**
 
 The successful response is a JSON object with the identifier of the generated query. 
@@ -91,6 +87,13 @@ An error response will include a statusCode >= 400 and a JSON object with `error
 ```
 {error: 'failed', message:'Request denied.'}
 ```
+
+* **Example List of POST objects**
+
+An sample array of POST objects is found [here](https://raw.githubusercontent.com/rranauro/trialio/master/rare_disease.json)
+
+> Remember: The endpoint is asynchronous so that each request should receive its response before sending the next request.
+
 
 **Delete Portfolio**
 ----
