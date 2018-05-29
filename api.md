@@ -69,10 +69,11 @@ The `feeds` optional property indicates whether to keep the portfolio private to
 
 Unless `feeds:'private'` option is provided, the portfolio will be visible to the owner creating the portfolio and members of his group. 
 
-
 The `api_key` is a string supplied by TrialIO.
 
+An sample array of POST objects is found [here](https://raw.githubusercontent.com/rranauro/trialio/master/rare_disease.json)
 
+> Remember: The endpoint is asynchronous so that each request should receive its response before sending the next request.
 
 * **Success Response:**
 
