@@ -1,0 +1,62 @@
+[
+   {
+      "name":"Multiple epiphyseal dysplasia Al-Gazali type",
+      "description":"Multiple epiphyseal dysplasia",
+      "values":[
+         {
+            "name":"other_terms",
+            "value":"multiple epiphyseal dysplasia|al-gazali type|jbts12"
+         }
+      ],
+      "api_key":"123456789abc",
+      "portfolio":"rare diseases"
+   },
+   {
+      "name":"Aspartylglucosaminuria",
+      "description":"Aspartylglucosaminuria",
+      "values":[
+         {
+            "name":"other_terms",
+            "value":"aspartylglucosaminuria|asrg"
+         }
+      ],
+      "api_key":"123456789abc",
+      "portfolio":"rare diseases"
+   },
+   {
+      "name":"Multiple sulfatase deficiency",
+      "description":"Multiple sulfatase deficiency",
+      "values":[
+         {
+            "name":"other_terms",
+            "value":"multiple sulfatase deficiency|fge"
+         }
+      ],
+      "api_key":"123456789abc",
+      "portfolio":"rare diseases"
+   },
+   {
+      "name":"Beta-mannosidosi",
+      "description":"Beta-mannosidosi",
+      "values":[
+         {
+            "name":"other_terms",
+            "value":"beta-mannosidosi|beta-mannosidase"
+         }
+      ],
+      "api_key":"123456789abc",
+      "portfolio":"rare diseases"
+   },
+   {
+      "name":"Pontocerebellar hypoplasia",
+      "description":"Pontocerebellar hypoplasia",
+      "values":[
+         {
+            "name":"other_terms",
+            "value":"pontocerebellar hypoplasia|sen54"
+         }
+      ],
+      "api_key":"123456789abc",
+      "portfolio":"rare diseases"
+   }
+]
