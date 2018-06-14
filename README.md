@@ -28,56 +28,23 @@ All endpoints are available at https://app.trialio.com/api/v1
 Returns an overview of available facet “keys”.
 ```
 // Example response
-{ acronym: 88537,
-  agency_class: 8,
-  authority: 22833,
-  biospec_retention: 3,
-  category: 27,
-  collaborator: 26980,
-  'completion_date:type': 2,
-  condition: 59164,
-  condition_browse: 3691,
-  contact: 145915,
-  download_date: 44,
-  duration: 47850,
-  eligibility: 277,
-  'eligibility:gender': 3,
-  enrollment: 153262,
-  'enrollment:type': 2,
-  facility: 365534,
-  has_expanded_access: 4,
-  intervention_browse: 2994,
-  'intervention:name': 180563,
-  'intervention:other_name': 46146,
-  'intervention:type': 9,
-  investigator: 107743,
-  is_fda_regulated: 4,
-  keyword: 163149,
-  lead_sponsor: 21118,
-  location_countries: 192,
-  mesh: 1,
-  nct_id: 450685,
-  overall_status: 13,
-  phase: 8,
-  PMID: 289162,
-  'primary_completion_date:type': 2,
-  study_design: 54,
-  study_type: 5,
-  verification_date: 499 }
+	['diseases', 
+	'interventions', 
+	'lead_sponsor',
+	'drug',
+	'target',
+	'biomarker']
 ```
 ### GET /facets/:facet?api_key=key
 Returns Picklist of available facet “values” for requested :facet
 ```
-// Example query /facets/phase
-{ phase: 
-   [ 'n/a',
-     'phase 0',
-     'phase 1',
-     'phase 1/phase 2',
-     'phase 2',
-     'phase 2/phase 3',
-     'phase 3',
-     'phase 4' ] }
+// Example query /facets/biomarker?api_key=key
+{"biomarker":[
+	"123i-ibvm",
+	"18f-fluorodeoxyglucose (fdg)","25-oh vitamin d",
+	"5-hiaa",
+	"8-isoprostane", ... ]}
+
 ```
 
 ### POST /trials
@@ -104,7 +71,9 @@ The response to the above request is an object as follows:
   queryId: 'string',
   nct_ids: 'array' of clinical trial identifiers,
   recordsTotal: 'number' of total trials matching primary search term,
-  recordsFiltered: 'number' of trials after filter term(s) applied
+  recordsFiltered: 'number' of trials after filter term(s) applied,
+  activity_history: 'object' with statistics,
+  card_values: 'object' with facet counts
 }
 ```
 
@@ -121,8 +90,7 @@ When `:id` is a `queryId` Use `start` and `length` to request a specific page of
 The aggregate analysis API builds on the data access API. However, in lieu of trial lists and documents, the endpoints calculate aggregate values for trial documents containing 
 
 ### GET /:queryId/profile?api_key=key
-Returns the response object returned from the `/trials` endpoint, with 2 additional properties: `activity_history` and `card_values`.
-
+Returns the response object returned from the `/trials` endpoint.
 ```
 // Example card_values response
 	"card_values": {
@@ -157,7 +125,7 @@ If you omit the facet_key specification, the endpoint will return an array of ob
 #### Response
 An example response object for `agency_class` is shown below:
 ```
-// Example result object from a cards query.
+// Example /:queryId/profile/api_key=key&facet=agency_class
 {
    "card":"agency_class",
    "draw":"0",
