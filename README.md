@@ -429,6 +429,10 @@ All content-type response headers are 'application/json'.
 
 **Notes:**
 
+- June 14, 2018
+
+Updated and merged Data and Aggregate API docs with Portfolio and Patient Report API doc.
+
 - May 21, 2018
 
 The `values` property is defined to be an array of `name/value` pairs.
