@@ -54,12 +54,12 @@ Returns an array of trial IDs meeting search criteria. The query object allows s
 ```
 // Example Request object
 ```
-{
-	name: 'string',
-	description: 'string',
-	format: {values: [{name: 'other_terms', value:'amnesia'},{name:'phase', value: 'phase1|phase2']},
-	api_key: 'string'
-}
+	{
+		name: 'string',
+		description: 'string',
+		format: {values: [{name: 'other_terms', value:'amnesia'},{name:'phase', value: 'phase1|phase2']},
+		api_key: 'string'
+	}
 ```
 // This query will find all phase 1 or phase 2 trials with "amnesia". documents matching either find criteria. The documents will
 // be ordered descending by `last_update_posted`
