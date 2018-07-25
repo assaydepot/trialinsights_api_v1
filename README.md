@@ -251,7 +251,7 @@ An sample array of POST objects is found [here](https://raw.githubusercontent.co
 
 **Delete Portfolio**
 ----
-Create portfolio of clinical trial queries.
+Delete portfolio of clinical trial queries.
 * **URL**
 
   /api/v1/portfolio
@@ -278,6 +278,44 @@ The successful response is a JSON object with two properties: `ok` and `deleted`
 
 ```
 {ok: true, deleted: 17}
+```
+
+* **Error Response:**
+
+An error response will include a statusCode >= 400 and a JSON object with `error` and `message` properties.
+
+```
+{error: 'failed', message:'Request denied.'}
+```
+**Compute Portfolio**
+----
+Force a re-computation of an existing portfolio of clinical trial queries.
+* **URL**
+
+  /api/v1/portfolio
+
+* **Method**
+
+  GET
+  
+*  **URL Params**
+
+	?api_key=key&portfolio=name
+
+The `api_key` is a string supplied by TrialIO.
+
+The `portfolio` is a string name of the portfolio to remove.
+
+* **Data Params**
+
+	None.
+
+* **Success Response:**
+
+The successful response is a JSON object with two properties: `ok` and `deleted`.
+
+```
+{ok: true, collections: 17}
 ```
 
 * **Error Response:**
