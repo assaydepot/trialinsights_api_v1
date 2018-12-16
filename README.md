@@ -47,7 +47,7 @@ The valid `value` specifications for both __primary search__ and __secondary sea
 
 ```
 // The following example values entry returns 
-// trials with breast cancer OR prostate cancer in the any valid text field.
+// trials with breast cancer OR prostate cancer found in any text field.
 {
   values: [{
     name: "other_terms",
@@ -79,7 +79,13 @@ A `value` is a simple string or a valid JavaScript regular expression. In the la
 // This query will find all `Phase 1` or `Phase 2` _breast cancer_ trials whose overall status is `Recruiting`. 
 // The default document ordering is by `study_first_posted`
 {
-  values: [{name: 'other_terms', value:'breast cancer'},{name:'phase', value: 'phase1|phase2'},{name:'overall_status', value:'Recruiting'}]
+  values: [{
+    name: 'other_terms', value:'breast cancer'
+  },{
+    name:'phase', value: 'phase1|phase2'
+  },{
+    name:'overall_status', value:'Recruiting'
+  }]
 }
 ```
 
