@@ -16,11 +16,47 @@ Use the __Data Access API__ to submit queries for relevant clinical trials and r
 Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
 
 #### Request Body
-The only required propery is a `values` array of objects, i.e., "terms" each with `name` and `value` properties. __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
-
-If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected. 
+The only required propery is a `values` array of objects, i.e., "terms". Each entry in the array is an object with two properties: `name` and `value`.  
 
 A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the tables below.
+
+##### Primary Search Values
+The valid `name` __primary search__ values are:
+
+| name  | value |
+| ------------- | --------------------------------------- |
+| other_terms | Searches all relevant text fields in trial document looking for matches, including title and description. |
+| diseases | Searches condition, condition_browse, and keyword fields for matches. |
+| interventions | Searches intervention, intervention_browse, and keyword fields for matches. |
+| drug | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
+
+##### Secondary Search Values
+The valid `name` __secondary search__ values and allowed 'value` specifications are:
+
+| name  | value |
+| ------------- | --------------------------------------- |
+| phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
+| overall_status  | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
+| intervention_type | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
+| study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
+| agency_class | NIH, 'U.S. Fed', Industry, Other |
+
+The valid `value` specifications for both __primary search__ and __secondary search__ values are simple strings or valid JavaScript regular expressions. 
+
+```
+// The following example values entry returns 
+// trials with breast cancer OR prostate cancer in the requested field.
+{
+  name: "other_terms",
+  value: "breast cancer|prostate cancer"
+}
+```
+
+> Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier.
+
+__The values array must include at least 1 primary search name and can have zero or more secondary search names.__
+
+If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
 A `value` is a simple string or a valid JavaScript regular expression. In the latter case, the regular expression will be applied to find matches for the field. In this way complex AND/OR expressions can be requested. 
 
@@ -32,40 +68,9 @@ A `value` is a simple string or a valid JavaScript regular expression. In the la
   values: [{name: 'other_terms', value:'breast cancer'},{name:'phase', value: 'phase1|phase2'},{name:'overall_status', value:'Recruiting'}]
 }
 ```
-The valid `name` __primary search__ values are:
-
-| name  | value |
-| ------------- | --------------------------------------- |
-| other_terms | Searches all relevant text fields in trial document looking for matches, including title and description. |
-| diseases | Searches condition, condition_browse, and keyword fields for matches. |
-| interventions | Searches intervention, intervention_browse, and keyword fields for matches. |
-| drug | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
-
-The valid `value` specifications are simple strings or valid JavaScript regular expressions. 
-
-```
-// For example, 
-{
-  name: "other_terms",
-  value: "breast cancer|prostate cancer"
-}
-// returns trials with breast cancer OR prostate cancer in the requested field.
-```
-
-> Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier.
-
-The valid `name` __secondary search__ values and allowed 'value` specifications are:
-
-| name  | value |
-| ------------- | --------------------------------------- |
-| phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
-| overall_status  | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
-| intervention_type | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
-| study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
-| agency_class | NIH, 'U.S. Fed', Industry, Other |
 
 #### Response
-The response to the above request is an object as follows:
+The request response is an object as follows:
 ```
 {
   queryId: 'string' identifier used for subsequent requests for documents,
