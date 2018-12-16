@@ -36,6 +36,7 @@ The valid `value` specification is a search string of valid JavaScript regular e
 > Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
 
 The valid `name` __secondary search__ terms and allowed values are:
+
 | name  | Valid values |
 | ------------- | --------------------------------------- |
 | phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
