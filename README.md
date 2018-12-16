@@ -31,13 +31,20 @@ The valid `name` __primary search__ terms are:
 - interventions
 - drug
 
+| name  | value |
+| ------------- | --------------------------------------- |
+| other_terms | Searches all relevant text fields in trial document looking for matches, including title and description. |
+| diseases | Searches condition, condition_browse, and keyword fields for matches. |
+| interventions | Searches intervention, intervention_browse, and keyword fields for matches. |
+| drug | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
+
 The valid `value` specification is a search string of valid JavaScript regular expressions. For example, `breast cancer|prostate cancer` returns trials with breast cancer OR prostate cancer in the requested field.
 
 > Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
 
-The valid `name` __secondary search__ terms and allowed values are:
+The valid `name` __secondary search__ terms and allowed 'value` specifications are:
 
-| name  | Valid values |
+| name  | value |
 | ------------- | --------------------------------------- |
 | phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
 | overall_status  | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
@@ -55,14 +62,9 @@ The response to the above request is an object as follows:
   recordsFiltered: 'number' of trials after subsequent term(s) applied
 }
 ```
-
-
-##### Request Details
+##### Additional Request Properties
 There are a number of optional properties developers can specify to control the response to the `/trials` POST request.
 
-| Property  | Values | Description |
-| ------------- | ------------- | --------------------------------------- |
-| Content Cell  | Content Cell  | Content Cell  |
 
 
 Search and Analysis API for Content at [ClinicalTrials.gov](http://clinicaltrials.gov)
