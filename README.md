@@ -1,12 +1,72 @@
 # app.trialio.com API
 
-- [Data Access](#data-access-api)
-- [Aggregate Analysis](#aggregate-analysis-api)
-- [Portfolio Management](#portfolio)
-- [Patient Reports](#patient-report)
+## Overview
+The API is comprised of a [Data Access API](#data-access-api) for querying clinical trials and rendering trial documents and an [Aggregate Analysis API](#aggregate-analysis-api) for analyzing and computing statistics over collections of clinical trial documents.
 
-## Analysis and Applications for Content at [ClinicalTrials.gov](http://clinicaltrials.gov)
-Application developers can use the API for programmatic access to all clinical trial data. The API provides for a __Data Access API__ and an __Aggregate Analysis API__ for clinical trial analytics. Clinical trial "facets" and trial "documents" represent the data and a data "profile" interface provides accees to analytics. Both aggregate analytics and trial content fetches are supported by a very powerful query object format, allowing for sensitive and precise control over the documents analyzed or returned from any request.
+### Authentication
+Access to app.trialio.com is relies on `api_key` property in the body of the *POST* or as a url query parameter `?api_key=key`. To generate a key go to settings for your account in the app and scroll down to the bottom. There you copy/paste the generated key.
+
+## Data Access API
+Use the __Data Access API__ to submit queries for relevant clinical trials and receive sorted, JSON formatted documents to be rendered by your application. In addition to the initial page of results, the API returns a query identifier used on subequent requests to to control paging, sorting, and requested fields of documents to be rendered by your app. 
+
+### POST /trials
+Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
+
+The query object allows specification of an array of `name/value` objects. If more than 1 property is provided within the object, then ALL of the name/values of that object have to be met for the document to be selected. A `value` is string, which can be a valid JavaScript regular expression. In that case, the regular expression will be applied to find matches for the field.
+
+#### Request
+A `values` array of objects each with `name` and `value` properties is the minimum required property for initiating a search. The values array must include at least 1 primary search term and can have zero or more secondary filters. 
+
+The valid `name` primary search terms are:
+- other_terms
+- diseases
+- interventions
+- drug
+
+The valid `value` specification is a search string of valid JavaScript regular expressions. For example, `breast cancer|prostate cancer` returns breast cancer OR prostate cancer trials.
+
+Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
+
+
+
+
+(required)  | Valid names: other_terms, diseases, interventions, drug,   |
+
+```
+// Example Request Body
+// This query will find all `Phase 1` or `Phase 2` trials _breast cancer_ trials whose overall status is `Recruiting`. 
+// The default document ordering is by `study_first_posted`
+{
+  values: [{name: 'other_terms', value:'breast cancer'},{name:'phase', value: 'phase1|phase2'},{name:'overall_status', value:'Recruiting'}]
+}
+```
+#### Response
+The response to the above request is an object as follows:
+```
+{
+  queryId: 'string' identifier used for subsequent requests for documents,
+  data: 'array' of trial documents,
+  recordsTotal: 'number' of total trials matching first search term,
+  recordsFiltered: 'number' of trials after subsequent term(s) applied
+}
+```
+
+
+##### Request Details
+There are a number of optional properties developers can specify to control the response to the `/trials` POST request.
+
+| Property  | Values | Description |
+| ------------- | ------------- | --------------------------------------- |
+| Content Cell  | Content Cell  | Content Cell  |
+
+
+Search and Analysis API for Content at [ClinicalTrials.gov](http://clinicaltrials.gov)
+
+
+
+Application developers can use the API for programmatic access to all clinical trial data. The API provides for a __Data Access API__ and an __Aggregate Analysis API__ for clinical trial analytics. 
+
+Clinical trial "facets" and trial "documents" represent the data and a data "profile" interface provides accees to analytics. Both aggregate analytics and trial content fetches are supported by a very powerful query object format, allowing for sensitive and precise control over the documents analyzed or returned from any request.
 
 ## Portfolio Management
 The __Portfolio Management API__ allows organizing related queries for bulk computation, access control, and monitoring. 
@@ -14,8 +74,11 @@ The __Portfolio Management API__ allows organizing related queries for bulk comp
 ## Patient Reports
 The __Patient Reports API__ provides a mechanism to email a set of results to a recipient as either a link back to the report in the TrialIO application or a formatted PDF report.
 
-## Authentication
-Access to app.trialio.com is relies on `api_key` property in the body of the *POST* or as a url query parameter `?api_key=key`. To generate a key go to settings for your account in the app and scroll down to the bottom. There you copy/paste the generated key.
+- [Data Access](#data-access-api)
+- [Aggregate Analysis](#aggregate-analysis-api)
+- [Portfolio Management](#portfolio)
+- [Patient Reports](#patient-report)
+
 
 ## Data Access API
 The Data Access consists of _facets_ and trial _documents_. Facets are used to populate menus and picklists throughout a client application. Facet _keys_ are the available fields in the CT.gov archive, for example "lead_sponsor" or "condition". Facet _values_ are the intance value for a given key, such as "Pfizer" or "heart disease" in our example.
@@ -47,35 +110,7 @@ Returns Picklist of available facet “values” for requested :facet
 
 ```
 
-### POST /trials
-Returns an array of trial IDs meeting search criteria. The query object allows specification of an array of objects. If more than 1 property is provided within the object, then ALL of the key/values of that object have to be met for the document to be selected. If multiple array elements are provided to find or filter, then ANY object where ALL key/values are a match will result in that document being "found" or "filtered". 
 
-#### Request
-```
-// Example Request object
-```
-	{
-		name: 'string',
-		description: 'string',
-		format: {values: [{name: 'other_terms', value:'amnesia'},{name:'phase', value: 'phase1|phase2']},
-		api_key: 'string'
-	}
-```
-// This query will find all phase 1 or phase 2 trials with "amnesia". documents matching either find criteria. The documents will
-// be ordered descending by `last_update_posted`
-```
-#### Response
-The response to the above request is an object as follows:
-```
-{
-  queryId: 'string',
-  nct_ids: 'array' of clinical trial identifiers,
-  recordsTotal: 'number' of total trials matching primary search term,
-  recordsFiltered: 'number' of trials after filter term(s) applied,
-  activity_history: 'object' with statistics,
-  card_values: 'object' with facet counts
-}
-```
 
 ### GET /:id/trials?start={start}&length={length}
 Returns an array of requested trial documents or an individual trial document.
