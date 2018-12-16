@@ -43,18 +43,32 @@ The valid `name` __secondary search__ values and allowed 'value` specifications 
 | study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
 | agency_class | NIH, 'U.S. Fed', Industry, Other |
 
-The valid `value` specifications for both __primary search__ and __secondary search__ values are simple strings or valid JavaScript regular expressions. In the case of __primary search__ free text strings are accepted. For __secondary search__ the available values for the `value` field are name spaced as defined in the table above.
+The valid `value` specifications for both __primary search__ and __secondary search__ values are simple strings or valid JavaScript regular expressions. In the case of __primary search__ free text strings are accepted. For __secondary search__ the available values for the `value` field are expected to include one or more text strings as defined in the value column of the table above.
 
 ```
 // The following example values entry returns 
-// trials with breast cancer OR prostate cancer in the requested field.
-{values: [{
-  name: "other_terms",
-  value: "breast cancer|prostate cancer"
-}]}
+// trials with breast cancer OR prostate cancer in the any valid text field.
+{
+  values: [{
+    name: "other_terms",
+    value: "breast cancer|prostate cancer"
+  }]
+}
 ```
 
 __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
+
+```
+// Example invalid request
+// Request must include at least 1 term with primary search name value. 
+{
+  values: [{
+    name: "phase",
+    value: "Phase 2"
+  }]
+}
+```
+
 
 If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
