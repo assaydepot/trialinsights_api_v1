@@ -15,11 +15,11 @@ Returns an object containing an array for the initial page of trial documents me
 #### Request Body
 The only required propery is a `values` array of objects, i.e., "terms" each with `name` and `value` properties. __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
 
-If more than 1  is provided within the object, then __ALL__ of the name/values terms have to be met for the document to be selected. 
+If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected. 
 
-A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ term shown in the tables below.
+A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the tables below.
 
-A `value` is a string or a be a valid JavaScript regular expression. In the latter case, the regular expression will be applied to find matches for the field. In this way complex AND/OR expressions can be requested. 
+A `value` is a simple string or a valid JavaScript regular expression. In the latter case, the regular expression will be applied to find matches for the field. In this way complex AND/OR expressions can be requested. 
 
 ```
 // Example Request Body
@@ -44,7 +44,7 @@ The valid `name` __primary search__ names are:
 
 The valid `value` specification is a search string of valid JavaScript regular expressions. For example, `breast cancer|prostate cancer` returns trials with breast cancer OR prostate cancer in the requested field.
 
-> Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
+> Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
 
 The valid `name` __secondary search__ names and allowed 'value` specifications are:
 
@@ -76,6 +76,7 @@ There are a number of optional properties developers can specify to control the 
 | sort | object | See below | An object describing the request sort behavior. The default is a descending `desc` sort. Specify  `direction: "asc"` to sort ascending. Additional sort values are: last_update_posted, start_date, completion_date |
 | location | object | null | An object specifying `country`, `city`, `state`. By specifying a `location` the sort request property is ignored and the resulting list of trials is sorted in ascending geographic distance from the supplied location. |
 | fields | object | See below | An object specifying which fields to include for each document in the response object. |
+| queryId | String | | A string identifier returned in the response body of a prior request. If supplied, the server will bypass the search algorithm and use the result cached from the original request. If the supplied `queryId` is valid the `values` property is not required. |
 
 ```
 // Default sort object
