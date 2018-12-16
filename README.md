@@ -17,29 +17,33 @@ The query object allows specification of an array of `name/value` objects. If mo
 #### Request
 A `values` array of objects each with `name` and `value` properties is the minimum required property for initiating a search. The values array must include at least 1 primary search term and can have zero or more secondary filters. 
 
-The valid `name` primary search terms are:
-- other_terms
-- diseases
-- interventions
-- drug
-
-The valid `value` specification is a search string of valid JavaScript regular expressions. For example, `breast cancer|prostate cancer` returns breast cancer OR prostate cancer trials.
-
-Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
-
-
-
-
-(required)  | Valid names: other_terms, diseases, interventions, drug,   |
-
 ```
 // Example Request Body
-// This query will find all `Phase 1` or `Phase 2` trials _breast cancer_ trials whose overall status is `Recruiting`. 
+// This query will find all `Phase 1` or `Phase 2` _breast cancer_ trials whose overall status is `Recruiting`. 
 // The default document ordering is by `study_first_posted`
 {
   values: [{name: 'other_terms', value:'breast cancer'},{name:'phase', value: 'phase1|phase2'},{name:'overall_status', value:'Recruiting'}]
 }
 ```
+The valid `name` __primary search__ terms are:
+- other_terms
+- diseases
+- interventions
+- drug
+
+The valid `value` specification is a search string of valid JavaScript regular expressions. For example, `breast cancer|prostate cancer` returns trials with breast cancer OR prostate cancer in the requested field.
+
+> Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
+
+The valid `name` __secondary search__ terms and allowed values are:
+| name  | Valid values |
+| ------------- | --------------------------------------- |
+| phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
+| overall_status  | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
+| intervention_type | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
+| study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
+| agency_class | NIH, 'U.S. Fed', Industry, Other |
+
 #### Response
 The response to the above request is an object as follows:
 ```
