@@ -12,10 +12,14 @@ Use the __Data Access API__ to submit queries for relevant clinical trials and r
 ### POST /trials
 Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
 
-The query object allows specification of an array of `name/value` objects. If more than 1 property is provided within the object, then ALL of the name/values of that object have to be met for the document to be selected. A `value` is string, which can be a valid JavaScript regular expression. In that case, the regular expression will be applied to find matches for the field.
+#### Request Body
+The only required propery is a `values` array of objects, i.e., "terms" each with `name` and `value` properties. __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
 
-#### Request
-A `values` array of objects each with `name` and `value` properties is the minimum required property for initiating a search. The values array must include at least 1 primary search term and can have zero or more secondary filters. 
+If more than 1  is provided within the object, then __ALL__ of the name/values terms have to be met for the document to be selected. 
+
+A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ term shown in the tables below.
+
+A `value` is a string or a be a valid JavaScript regular expression. In the latter case, the regular expression will be applied to find matches for the field. In this way complex AND/OR expressions can be requested. 
 
 ```
 // Example Request Body
@@ -25,7 +29,7 @@ A `values` array of objects each with `name` and `value` properties is the minim
   values: [{name: 'other_terms', value:'breast cancer'},{name:'phase', value: 'phase1|phase2'},{name:'overall_status', value:'Recruiting'}]
 }
 ```
-The valid `name` __primary search__ terms are:
+The valid `name` __primary search__ names are:
 - other_terms
 - diseases
 - interventions
@@ -42,7 +46,7 @@ The valid `value` specification is a search string of valid JavaScript regular e
 
 > Specifying `name: "other_terms"` causes the search engine to include additional text fields in trial documents in its recall such as the `title` and `description` whereas limiting the name to `drug` for example will search only the `intervention` and `keyword` areas of the trial documents. For maxumum recall, use `other_terms`. For more specific recall, use the appropriate `name` specifier.
 
-The valid `name` __secondary search__ terms and allowed 'value` specifications are:
+The valid `name` __secondary search__ names and allowed 'value` specifications are:
 
 | name  | value |
 | ------------- | --------------------------------------- |
@@ -64,6 +68,45 @@ The response to the above request is an object as follows:
 ```
 ##### Additional Request Properties
 There are a number of optional properties developers can specify to control the response to the `/trials` POST request.
+
+| Request Property  | Type | Default | Description |
+| ------------- | ---------- | ---------- | --------------------------------------- |
+| start | Number | 0 | The index of the first requested document from the search result |
+| length | Number | 10 | The number of documents requested by the client. Use -1 to request all. |
+| sort | object | See below | An object describing the request sort behavior. The default is a descending `desc` sort. Specify  `direction: "asc"` to sort ascending. Additional sort values are: last_update_posted, start_date, completion_date |
+| location | object | null | An object specifying `country`, `city`, `state`. By specifying a `location` the sort request property is ignored and the resulting list of trials is sorted in ascending geographic distance from the supplied location. |
+| fields | object | See below | An object specifying which fields to include for each document in the response object. |
+
+```
+// Default sort object
+{sort:'study_first_posted', direction: 'desc'}
+
+// Default fields object
+{
+  nct_id: 1,
+  brief_title: 1,
+  phase: 1,
+  overall_status: 1,
+  sponsors: 1,
+  enrollment: 1,
+  drug: 1,
+  other_names: 1,
+  target: 1,
+  condition: 1,
+  intervention_name: 1,
+  agency_class: 1,
+  study_type: 1,
+  intervention_type: 1,
+  primary_outcome: 1,
+  last_history_update: 1,
+  last_update_posted: 1,
+  last_update_submitted: 1,
+  study_first_submitted: 1,
+  study_first_posted: 1,
+  start_date: 1,
+  completion_date: 1
+}
+```
 
 
 
