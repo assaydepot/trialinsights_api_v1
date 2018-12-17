@@ -16,12 +16,12 @@ Use the __Data Access API__ to submit queries for relevant clinical trials and r
 Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
 
 #### Request Body
-The only required propery is a `values` array of objects, i.e., "terms". Each entry in the array is an object with two properties: `name` and `value`.  
+The required propery is a `values` array of objects, i.e., "terms". Each entry in the array is an object with two properties: `name` and `value`.  
 
 A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the tables below.
 
 ##### Primary Search Names
-The valid `name` __primary search__ values are:
+The valid values for the `name` __primary search__ key is:
 
 | name  | value |
 | ------------- | --------------------------------------- |
@@ -33,7 +33,7 @@ The valid `name` __primary search__ values are:
 > Note: *other_terms* special handling. Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention` and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier.
 
 ##### Secondary Search Names
-The valid `name` __secondary search__ values and allowed 'value` specifications are:
+The valid values for the `name` __secondary search__ key is:
 
 | name  | value |
 | ------------- | --------------------------------------- |
