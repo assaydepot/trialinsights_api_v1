@@ -18,6 +18,17 @@ Returns an object containing an array for the initial page of trial documents me
 #### Request Body
 The required propery is a `values` array of objects, i.e., "terms". Each entry in the array is an object with two properties: `name` and `value`.  
 
+```
+// The following example values entry returns 
+// trials with breast cancer OR prostate cancer found in any text field.
+{
+  values: [{
+    name: "other_terms",
+    value: "breast cancer|prostate cancer"
+  }]
+}
+```
+
 A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the tables below.
 
 ##### Primary Search Names
@@ -30,7 +41,7 @@ The valid values for the `name` __primary search__ key is:
 | interventions | Searches intervention, intervention_browse, and keyword fields for matches. |
 | drug | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
 
-> Note: *other_terms* special handling. Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention` and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier.
+> Note: *other_terms* special handling. Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier.
 
 ##### Secondary Search Names
 The valid values for the `name` __secondary search__ key is:
@@ -44,17 +55,6 @@ The valid values for the `name` __secondary search__ key is:
 | agency_class | NIH, 'U.S. Fed', Industry, Other |
 
 The valid `value` specifications for both __primary search__ and __secondary search__ values are simple strings or valid JavaScript regular expressions. In the case of __primary search__ free text strings are accepted. For __secondary search__ the available values for the `value` field are expected to include one or more text strings as defined in the value column of the table above.
-
-```
-// The following example values entry returns 
-// trials with breast cancer OR prostate cancer found in any text field.
-{
-  values: [{
-    name: "other_terms",
-    value: "breast cancer|prostate cancer"
-  }]
-}
-```
 
 __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
 
