@@ -205,7 +205,7 @@ Use the `queryId` returned from the `/trials` endpoint to access additional prop
 // Example card_values response
 {
   nct_ids: [ array of trial identifiers ],
-  activity_history: { object of time series statistics about the set of trials },
+  activity_history: { object of time series and aggregate statistics about the set of trials },
   card: { object of aggregate statistics for each facet and its values },
   card_values: {
 	"agency_class": 4,
