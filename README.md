@@ -32,7 +32,7 @@ The required property is an array of objects whose property name is `values`. Ea
 A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the table below.
 
 ##### Primary Search and Secondary Search Names
-Primary search strings are free text and secondary search strings are controlled filters using the vocabulary of ClinicalTrials.gov. The valid strings for the `name` property of value object is shown in the table here:
+Primary search value strings are free text and secondary search value strings are controlled filters using the vocabulary of ClinicalTrials.gov. The valid strings for the `name` property of a name/value object is shown in the table here:
 
 | name  | Type | Behavior |
 | ------------- | ------------- | --------------------------------------- |
@@ -46,7 +46,7 @@ Primary search strings are free text and secondary search strings are controlled
 | study_type | Secondary | Filter results by valid clinical trial study type. |
 | agency_class | Secondary | Filter results by valid clinical trial agency class designation. |
 
-__The values array must include at least 1 primary search name and can have zero or more secondary search names.__
+__The values array must include at least 1 primary search name/value and can have zero or more secondary search name/values.__
 
 ```
 // Example invalid request
@@ -62,7 +62,7 @@ __The values array must include at least 1 primary search name and can have zero
 ###### When to use "other_terms" as a Primary Search term
 Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. __For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
-If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
+If more than 1 Primary Search term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
 For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table below will trigger matches.
 
@@ -110,7 +110,7 @@ The request response is an object as follows:
 ```
 A request that produces no results will return a statusCode 200 but will have an empty array in the `data` property of the response object and -1 `recordsTotal`.
 
-The server will response with error response a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
+The server will respond with error response a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
 ```
 // Example error response:
 {error: 'failed', message:'Request denied.'}
@@ -178,7 +178,7 @@ $.ajax({
 ```
 
 ###### Location sorting
-When posting a query a `location` property, trial results will be sorted in the `data` response based on the distance from from nearest to farthest from the requested location. Resulting trial documents will have a `sites` property. `sites` is an array of objects where each object includes the detail for the participating site, including the responsible contacts at the site, if available at ClinicalTrials.gov.
+When posting a query with a `location` property, trial results will be sorted in the `data` response based on the distance from from nearest to farthest from the requested location. Resulting trial documents will have a `sites` property. `sites` is an array of objects where each object includes the detail for the participating site, including the responsible contacts at the site, if available at ClinicalTrials.gov.
 
 ```
 // Example sites property of response object
