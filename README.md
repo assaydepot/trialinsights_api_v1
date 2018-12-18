@@ -62,7 +62,7 @@ __The values array must include at least 1 primary search name/value and can hav
 ```
 
 ###### When to use "other_terms" as a Primary Search term
-Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. __For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
+Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. __For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
 If more than 1 Primary Search term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
@@ -103,7 +103,7 @@ Multiple entries for a secondary search term will form a logical "OR", as shown 
 The request response is an object as follows:
 ```
 {
-  queryId: 'string' identifier used for subsequent requests for documents,
+  queryId: 'string' identifier returned by the server, to be used by client for subsequent requests,
   data: 'array' of trial documents,
   recordsTotal: 'number' of total trials matching first search term,
   recordsFiltered: 'number' of trials after subsequent term(s) applied,
@@ -112,7 +112,7 @@ The request response is an object as follows:
 ```
 A request that produces no results will return a statusCode 200 but will have an empty array in the `data` property of the response object and -1 `recordsTotal`.
 
-The server will respond with error response a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
+The server will respond with a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
 ```
 // Example error response:
 {error: 'failed', message:'Request denied.'}
