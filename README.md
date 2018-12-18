@@ -66,7 +66,7 @@ Specifying `name: "other_terms"` causes the search engine to include additional 
 
 If more than 1 Primary Search term is provided within the `values` array object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
-For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table below will trigger matches.
+For __primary search__ terms, any string in the associated field of the trial document containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table below will trigger matches.
 
 
 | name  | Valid Values |
