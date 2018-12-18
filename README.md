@@ -29,34 +29,27 @@ The required propery is a `values` array of objects, i.e., "terms". Each entry i
 }
 ```
 
-A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the tables below.
+A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the table below.
 
-##### Primary Search Names
-The valid values for the `name` __primary search__ key is:
+##### Primary Search and Secondary Search Names
+Primary search strings are free text and secondary search strings are controlled filters using the vocabulary of ClinicalTrials.gov. The valid strings for the `name` property of value object is shown in the table here:
 
-| name  | value |
-| ------------- | --------------------------------------- |
-| other_terms | Searches all relevant text fields in trial document looking for matches, including title and description. |
-| diseases | Searches condition, condition_browse, and keyword fields for matches. |
-| interventions | Searches intervention, intervention_browse, and keyword fields for matches. |
-| drug | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
-
-> Note: *other_terms* special handling. Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier.
-
-##### Secondary Search Names
-The valid values for the `name` __secondary search__ key is:
-
-| name  | value |
-| ------------- | --------------------------------------- |
-| phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
-| overall_status  | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
-| intervention_type | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
-| study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
-| agency_class | NIH, 'U.S. Fed', Industry, Other |
-
-The valid `value` specifications for both __primary search__ and __secondary search__ values are simple strings or valid JavaScript regular expressions. In the case of __primary search__ free text strings are accepted. For __secondary search__ the available values for the `value` field are expected to include one or more text strings as defined in the value column of the table above.
+| name  | type | value |
+| ------------- | ------------- | --------------------------------------- |
+| other_terms | Primary | Searches all relevant text fields in trial document looking for matches, including title and description. |
+| diseases | Primary | Searches condition, condition_browse, and keyword fields for matches. |
+| interventions | Primary | Searches intervention, intervention_browse, and keyword fields for matches. |
+| drug | Promary | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
+| phase  | Secondary | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
+| overall_status  | Secondary | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
+| intervention_type | Secondary | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
+| study_type | Secondary | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
+| agency_class | Secondary | NIH, 'U.S. Fed', Industry, Other |
 
 __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
+
+###### When to use "other_terms" 
+Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. __For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
 ```
 // Example invalid request
