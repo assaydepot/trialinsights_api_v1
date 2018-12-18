@@ -70,11 +70,8 @@ For __primary search__ terms, any string containing the supplied string will tri
 
 
 | name | Valid Values |
-| phase | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
-| overall_status | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn |
-| intervention_type | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
-| study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
-| agency_class | NIH, 'U.S. Fed', Industry, Other |
+
+| phase | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A |
 
 ```
 // Example Request Body
