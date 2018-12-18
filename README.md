@@ -32,7 +32,7 @@ The required property is an array of objects whose property name is `values`. Ea
 A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the table below.
 
 ##### Primary Search and Secondary Search Names
-Primary search value strings are free text and secondary search value strings are controlled filters using the vocabulary of ClinicalTrials.gov. The valid strings for the `name` property of a name/value object is shown in the table here:
+The valid strings for the `name` property of a name/value object is shown in the table here:
 
 | name  | Type | Behavior |
 | ------------- | ------------- | --------------------------------------- |
@@ -45,6 +45,8 @@ Primary search value strings are free text and secondary search value strings ar
 | intervention_type | Secondary | Filter results by valid clinical trial intervention type. |
 | study_type | Secondary | Filter results by valid clinical trial study type. |
 | agency_class | Secondary | Filter results by valid clinical trial agency class designation. |
+
+Primary search value strings are free text and secondary search value strings are controlled filters using the vocabulary of ClinicalTrials.gov. 
 
 __The values array must include at least 1 primary search name/value and can have zero or more secondary search name/values.__
 
