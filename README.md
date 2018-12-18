@@ -64,7 +64,7 @@ __The values array must include at least 1 primary search name/value and can hav
 ###### When to use "other_terms" as a Primary Search term
 Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. __For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
-If more than 1 Primary Search term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
+If more than 1 Primary Search term is provided within the `values` array object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
 For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table below will trigger matches.
 
@@ -247,7 +247,7 @@ Returns Picklist of available facet “values” for requested :facet
 ```
 
 ## Aggregate Analysis API
-The aggregate analysis API builds on the data access API. However, in lieu of trial lists and documents, the endpoints calculate aggregate values for trial documents containing 
+The aggregate analysis API builds on the data access API. However, in lieu of trial lists and documents, the endpoints calculate aggregate values for entire collections of trial documents resulting from searches. 
 
 ### GET /:queryId/profile[?facet=facet]
 Use the `queryId` returned from the `/trials` endpoint to access additional properties about the aggregate analysis of the trials that met the search criteria.
