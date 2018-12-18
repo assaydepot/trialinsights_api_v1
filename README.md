@@ -16,7 +16,7 @@ Use the __Data Access API__ to submit queries for relevant clinical trials and r
 Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
 
 #### Request Body
-The required propery is a `values` array of objects, i.e., "terms". Each entry in the array is an object with two properties: `name` and `value`.  
+The required property is an array of objects whose property name is `values`. Each entry in the array is an object with two properties: `name` and `value`.  
 
 ```
 // The following example values entry returns 
@@ -64,9 +64,7 @@ Specifying `name: "other_terms"` causes the search engine to include additional 
 
 If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
-A `value` is a case in-sensitive string or a valid JavaScript regular expression. 
-
-For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table will trigger matches.
+For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table below will trigger matches.
 
 
 | name  | Valid Values |
@@ -77,6 +75,9 @@ For __primary search__ terms, any string containing the supplied string will tri
 | study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] | | agency_class | NIH, 'U.S. Fed', Industry, Other |
 
 __Note: Value strings are case in-sensitive.__
+
+###### Multiple values for a Secondary Search term.
+Multiple entries for a secondary search term will form a logical "OR", as shown in the example below:
 
 ```
 // Example Request Body
@@ -175,6 +176,40 @@ $.ajax({
 	}
 });
 ```
+
+###### Location sorting
+When posting a query a `location` property, trial results will be sorted in the `data` response based on the distance from from nearest to farthest from the requested location. Resulting trial documents will have a `sites` property. `sites` is an array of objects where each object includes the detail for the participating site, including the responsible contacts at the site, if available at ClinicalTrials.gov.
+
+```
+// Example sites property of response object
+{
+  recordsTotal: 24,
+  recordsFiltered: 24,
+  data: [{
+    nct_id: 'NCT0001234',
+    brief_title: 'A Clinical Trial...',
+    conditions: ['condition1', 'condition2'...],
+    ...
+    sites: [{
+      site: 'site name',
+      city: 'city',
+      state: 'state',
+      country: 'country',
+      contacts: [{
+        firstname: 'firstname',
+	lastname: 'lastname',
+	phone: '111-234-5678',
+	email: 'some@email.com'
+      }{
+        ...
+      }]
+    }]
+  },{
+     ...
+  }]
+}
+```
+
 
 ### GET /:id/trials?start={start}&length={length}
 Returns an array of requested trial documents or an individual trial document.
