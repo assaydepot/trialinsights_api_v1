@@ -105,6 +105,13 @@ The request response is an object as follows:
   sitesAvailable: 'number' of sites participating in trials meeting location sort criteria. 
 }
 ```
+A request that produces no results will return a statusCode 200 but will have an empty array in the `data` property of the response object and -1 `recordsTotal`.
+
+The server will response with error response a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
+```
+// Example error response:
+{error: 'failed', message:'Request denied.'}
+```
 ##### Additional Request Properties
 There are a number of optional properties developers can specify to control the response to the `/trials` POST request.
 
