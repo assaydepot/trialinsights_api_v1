@@ -72,17 +72,22 @@ __The values array must include at least 1 primary search name and can have zero
 
 If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
-A `value` is a simple string or a valid JavaScript regular expression. In the latter case, the regular expression will be applied to find matches for the field. In this way complex AND/OR expressions can be requested. 
+A `value` is a case in-sensitive string or a valid JavaScript regular expression. 
+
+For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only valid described in the table will trigger matches.
 
 ```
 // Example Request Body
 // This query will find all `Phase 1` or `Phase 2` _breast cancer_ trials whose overall status is `Recruiting`. 
 // The default document ordering is by `study_first_posted`
+// Note: value strings are case-in sensitive.
 {
   values: [{
     name: 'other_terms', value:'breast cancer'
   },{
-    name:'phase', value: 'phase1|phase2'
+    name:'phase', value: 'phase 1'
+  },{
+    name: 'phase', value: 'phase 2'
   },{
     name:'overall_status', value:'Recruiting'
   }]
