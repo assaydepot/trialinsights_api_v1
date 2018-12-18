@@ -34,22 +34,19 @@ A `name` is a string value corresponding to a valid __primary search__ or __seco
 ##### Primary Search and Secondary Search Names
 Primary search strings are free text and secondary search strings are controlled filters using the vocabulary of ClinicalTrials.gov. The valid strings for the `name` property of value object is shown in the table here:
 
-| name  | type | value |
+| name  | Type | Behavior |
 | ------------- | ------------- | --------------------------------------- |
 | other_terms | Primary | Searches all relevant text fields in trial document looking for matches, including title and description. |
 | diseases | Primary | Searches condition, condition_browse, and keyword fields for matches. |
 | interventions | Primary | Searches intervention, intervention_browse, and keyword fields for matches. |
-| drug | Promary | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and includes drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
-| phase  | Secondary | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
-| overall_status  | Secondary | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
-| intervention_type | Secondary | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
-| study_type | Secondary | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
-| agency_class | Secondary | NIH, 'U.S. Fed', Industry, Other |
+| drug | Primary | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and will find matches to drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
+| phase  | Secondary | Filter results by valid clinical trial phase.  |
+| overall_status  | Secondary | Filter results by valid clinical trial overall status.  |
+| intervention_type | Secondary | Filter results by valid clinical trial intervention type. |
+| study_type | Secondary | Filter results by valid clinical trial study type. |
+| agency_class | Secondary | Filter results by valid clinical trial agency class designation. |
 
 __The values array must include at least 1 primary search name and can have zero or more secondary search names.__
-
-###### When to use "other_terms" 
-Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. __For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
 ```
 // Example invalid request
@@ -62,12 +59,21 @@ Specifying `name: "other_terms"` causes the search engine to include additional 
 }
 ```
 
+###### When to use "other_terms" as a Primary Search term
+Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. For maximum recall, use `other_terms`. __For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
 If more than 1 term is provided within the object, then __ALL__ of the name/value terms have to be met for the document to be selected.
 
 A `value` is a case in-sensitive string or a valid JavaScript regular expression. 
 
-For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only valid described in the table will trigger matches.
+For __primary search__ terms, any string containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table will trigger matches.
+
+| name | Valid Values |
+| phase  Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
+| overall_status | 'Active, not recruiting', Completed, Enrolling by invitation, Not yet recruiting, Recruiting, Suspended, Terminated, Withdrawn   |
+| intervention_type | Behavioral, Biological, Combination Product, Device, Diagnostic Test, Dietary Supplement, Drug, Genetic, Procedutre, Radiation, Other |
+| study_type | Expanded Access, Interventional, N/A, Observational, Observational [Patient Registry] |
+| agency_class | NIH, 'U.S. Fed', Industry, Other |
 
 ```
 // Example Request Body
