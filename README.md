@@ -78,7 +78,7 @@ For __primary search__ terms, any string in the associated field of the trial do
 
 __Note: Value strings are case in-sensitive.__
 
-###### Multiple values for a Secondary Search term.
+###### Multiple entries for a given Secondary Search term.
 Multiple entries for a secondary search term will form a logical "OR", as shown in the example below:
 
 ```
