@@ -180,7 +180,7 @@ $.ajax({
 ```
 
 ###### Location sorting
-When posting a query with a `location` property, trial results will be sorted in the `data` response based on the distance from from nearest to farthest from the requested location. Resulting trial documents will have a `sites` property. `sites` is an array of objects where each object includes the detail for the participating site, including the responsible contacts at the site, if available at ClinicalTrials.gov.
+To get trials sorted by distance from a location, use `sort: "distance"` and include a `location` property. Results will be sorted in the `data` response based on the distance from from nearest to farthest from the requested location. Resulting trial documents will have a `sites` property. `sites` is an array of objects where each object includes the detail for the participating site, including the responsible contacts at the site, if available at ClinicalTrials.gov.
 
 ```
 // Example sites property of response object
