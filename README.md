@@ -1,13 +1,13 @@
-# app.trialio.com API
-Search and Analysis API for Content at [ClinicalTrials.gov](http://clinicaltrials.gov)
+# Trial Insights API
+Search and Analysis API for Trial Insights Clinical Trial Search, Intelligence, and Surveillance
 
 ## Overview
 The API is comprised of a [Data Access API](#data-access-api) for querying clinical trials and rendering trial documents and an [Aggregate Analysis API](#aggregate-analysis-api) for analyzing and computing statistics over collections of clinical trial documents.
 
 ### Authentication
-Access to app.trialio.com is relies on `api_key` property in the body of the *POST* or as a url query parameter `?api_key=key`. To generate a key go to settings for your account in the app and scroll down to the bottom. There you copy/paste the generated key.
+Access to app.trialiinsights.com is relies on `api_key` property in the body of the *POST* or as a url query parameter `?api_key=key`. To generate a key go to settings for your account in the app and scroll down to the bottom. There you copy/paste the generated key.
 
-All endpoints are available at https://app.trialio.com/api/v1
+All endpoints are available at https://app.trialinsights.com/api/v1
 
 ## Data Access API
 Use the __Data Access API__ to submit queries for relevant clinical trials and receive sorted, JSON formatted documents to be rendered by your application. In addition to the initial page of results, the API returns a query identifier used on subequent requests to to control paging, sorting, and requested fields of documents to be rendered by your app. 
@@ -39,7 +39,7 @@ The valid strings for the `name` property of a name/value object is shown in the
 | other_terms | Primary | Searches all relevant text fields in trial document looking for matches, including title and description. |
 | diseases | Primary | Searches condition, condition_browse, and keyword fields for matches. |
 | interventions | Primary | Searches intervention, intervention_browse, and keyword fields for matches. |
-| drug | Primary | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by TrialIO and will find matches to drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
+| drug | Primary | Searches intervention, intervention_browse, keyword and other_names for matches. Note: other_names is extended by Trialinsights and will find matches to drug synonyms found at [PubChem](https://pubchem.ncbi.nlm.nih.gov/) and [Therapeutic Target Database](https://db.idrblab.org/ttd/) |
 | phase  | Secondary | Filter results by valid clinical trial phase.  |
 | overall_status  | Secondary | Filter results by valid clinical trial overall status.  |
 | intervention_type | Secondary | Filter results by valid clinical trial intervention type. |
@@ -162,7 +162,7 @@ There are a number of optional properties developers can specify to control the 
 
 // Example request
 $.ajax({
-	url: "https://app.trialio.com/api/v1/trials",
+	url: "https://app.trialinsights.com/api/v1/trials",
 	dataType: "json",
 	type : "POST",
 	data: {
@@ -385,11 +385,11 @@ The `values` property is defined to be an array of `name/value` pairs.
 
 The *api_key* is acquired manually.
 
-The requestors logo can be substituted for the TrialIO logo in the HTML and PDF versions by prior arrangement.
+The requestors logo can be substituted for the Trialinsights logo in the HTML and PDF versions by prior arrangement.
 
 The requestors *name* and *affiliation* used in the report can be added to the request if HTML or PDF responses are requested. Otherwise, the user and affiliation of the owner of the *api_key* will be used for those outputs.
 
 If an unrecognized country/city/state is requested, the location search will not work. An API for confirming coordinates is planned.
 
 #
-app.trialio.com and trialio.com are trademarks of Incite Advisors, Inc.
+app.trialinsights.com and trialinsights.com are trademarks of Incite Advisors, Inc. and Scientist.com
