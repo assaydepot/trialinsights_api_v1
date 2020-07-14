@@ -103,8 +103,8 @@ Multiple entries for a secondary search term will form a logical "OR", as shown 
 The request response is an object as follows:
 ```
 {
-  queryId: 'string' identifier returned by the server, to be used by client for subsequent requests,
-  data: 'array' of trial documents,
+  docs: 'array' of trial documents,
+  nct_ids: 'array' of trial identifiers,
   recordsTotal: 'number' of total trials matching first search term,
   recordsFiltered: 'number' of trials after subsequent term(s) applied,
   sitesAvailable: 'number' of sites participating in trials meeting location sort criteria. 
@@ -136,28 +136,44 @@ There are a number of optional properties developers can specify to control the 
 
 // Default fields object
 {
-  nct_id: 1,
-  brief_title: 1,
-  phase: 1,
-  overall_status: 1,
-  sponsors: 1,
-  enrollment: 1,
-  drug: 1,
-  other_names: 1,
-  target: 1,
-  condition: 1,
-  intervention_name: 1,
-  agency_class: 1,
-  study_type: 1,
-  intervention_type: 1,
-  primary_outcome: 1,
-  last_history_update: 1,
-  last_update_posted: 1,
-  last_update_submitted: 1,
-  study_first_submitted: 1,
-  study_first_posted: 1,
-  start_date: 1,
-  completion_date: 1
+	nct_id: 1,
+	agency_class: 1,
+	overall_status: 1,
+	phase: 1,
+	intervention_type: 1,
+	study_type: 1,
+	biospec_retention: 1,
+	biospec_retention: 1,
+	study_type: 1,
+	has_expanded_access: 1,
+	study_design_info: 1,
+	structured_eligibility: 1,
+
+	number_of_arms: 1,
+	enrollment: 1,
+	location: 1,
+	location_countries: 1,
+	duration: 1,
+	completion_date: 1,
+	primary_completion_date: 1,
+	start_date: 1,
+	study_first_posted: 1,
+	last_update_posted: 1,
+	results_first_posted: 1,
+
+	registry: 1,
+	source_registry: 1,
+
+	lead_sponsor: 1,
+	collaborator: 1,
+	condition_browse: 1,
+	intervention_browse: 1,
+	keyword: 1,
+	drug: 1,
+	other_names: 1,
+	target: 1,
+	biomarker: 1,
+	investigator: 1
 }
 
 // Example request
@@ -187,7 +203,7 @@ To get trials sorted by distance from a location, use `sort: "distance"` and inc
 {
   recordsTotal: 24,
   recordsFiltered: 24,
-  data: [{
+  docs: [{
     nct_id: 'NCT0001234',
     brief_title: 'A Clinical Trial...',
     conditions: ['condition1', 'condition2'...],
@@ -213,10 +229,8 @@ To get trials sorted by distance from a location, use `sort: "distance"` and inc
 ```
 
 
-### GET /:id/trials?start={start}&length={length}
-Returns an array of requested trial documents or an individual trial document.
-
-If the url parameter `:id` is the `queryId` from a prior *POST* response object use `start` and `length` to request a specific page of documents.
+### GET /:id/trials
+Returns an individual trial document.
 
 If `:id` resolves to a clinical trial identifier, that trial document will be returned.
 
@@ -369,6 +383,10 @@ The successful response is a JSON object with two properties: `ok` and `deleted`
 ```
 
 **Notes:**
+- July 14, 2020
+Removed `queryId` from POST `/trials` response object and GET `/trials` request.
+Updated default `fields`.
+
 - December 16, 2018
 
 Consolidated search API with output property. 
