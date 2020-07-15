@@ -15,18 +15,61 @@ All endpoints are available at https://app.trialinsights.com/api/v1
 Use the __Trials API__ to submit queries for relevant clinical trials and receive sorted, JSON formatted documents to be rendered by your application. In addition to the initial page of results the response object includes `recordsTotal` and the `nct_ids` array of clinical trial identifiers. Query parameters inclue options for sorting, paging, and selecting only requested fields.
 
 ### POST /find
-Post an object containing a `values` property which is an array of terms. Each term consists of a `name` and a `value`. The [table](#primary-search-and-secondary-search-names) below describes the valid values for `name/value`. The server responds with an object with a `recordsFiltered` number for the total documents found and `nct_ids` array of trial identifiers. Use this information to request pages of documents using the `/fetch` endpoint.
+Post an object containing a `values` property which is an array of terms. Each term consists of a `name` and a `value`. Each entry in the array is an object with two properties: `name` and `value`.  
+
+A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the [table below](#primary-search-and-secondary-search-names). The server responds with an object with a `recordsFiltered` number for the total documents found and `nct_ids` array of trial identifiers. Use this information to request pages of documents using the `/fetch` endpoint.
+
+A `value` is your keyword(s) or a valid value of a clinical trial property such as `Phase 1` for _Phase_. 
 
 ```
 // The following example values entry returns 
-// trials with breast cancer OR prostate cancer found in any text field.
+// trials with breast cancer in any text field.
 {
   values: [{
     name: "other_terms",
     value: "breast cancer|prostate cancer"
   }]
 }
+
+// The following example values entry returns 
+// trials with breast cancer OR prostate cancer found in diseases section of the trial.
+{
+  values: [{
+    name: "diseases",
+    value: "breast cancer|prostate cancer"
+  }]
+}
+
+// The following example values entry returns 
+// trials with breast cancer AND prostate cancer found in diseases section of the trial.
+{
+  values: [{
+    name: "diseases",
+    value: "breast cancer"
+  },{
+    name: "diseases",
+    value: "prostate cancer"
+  }]
+}
+
+
+// The request response is an object as follows:
+{
+  nct_ids: 'array' of trial identifiers,
+  recordsTotal: 'number' of total trials matching first search term,
+}
 ```
+
+##### Request Errors
+A request that produces no results will return a statusCode 200 but will have an empty array in the `nct_ids` property of the response object and -1 `recordsTotal`.
+
+In most cases, the server will respond with a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
+
+```
+// Example error response:
+{error: 'failed', message:'Request denied.'}
+```
+
 ##### Primary Search and Secondary Search Names
 The valid strings for the `name` property of a name/value object is shown in the table here:
 
@@ -57,31 +100,16 @@ __The values array must include at least 1 primary search name/value and can hav
 }
 ```
 
-### POST /fetch
-
-### POST /trials
-Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
-
-containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
-
-
-#### Request Body
-The required property is an array of objects whose property name is `values`. Each entry in the array is an object with two properties: `name` and `value`.  
-
-
-
-A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the table below.
-
-
-
 ###### When to use "other_terms" as a Primary Search term
-Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. __For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
+Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. 
 
-If more than 1 Primary Search term is provided within the `values` array object, then __ALL__ of the name/value terms have to be met for the document to be selected.
+__For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
 
-For __primary search__ terms, any string in the associated field of the trial document containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in Valid Values in the table below will trigger matches.
+If more than 1 Primary Search term is provided within the `values` array object, matches result when __all__ terms are found in the trial document. All of the name/value terms have to be met for the document to be selected.
 
+For __primary search__ terms, any string in the associated field of the trial document containing the supplied string will trigger a match, including a string describing a JavaScript regular expression. For __secondary search__ terms, only strings listed in [Valid Values](#valid-values) in the table below will trigger matches.
 
+###### Valid Values
 | name  | Valid Values |
 | ------------- | ------------- |
 | phase  | Phase 1, Phase 2, Phase 3, Phase 4, Phase 1/Phase 2, Phase 2/Phase 3, Early Phase 1, N/A  |
@@ -111,25 +139,9 @@ Multiple entries for a secondary search term will form a logical "OR", as shown 
   }]
 }
 ```
+### POST /fetch
+Post a document with an array of `nct_ids` to request associated trial documents. The response object from `/find` is compatible as input to `/fetch`. 
 
-#### Response
-The request response is an object as follows:
-```
-{
-  docs: 'array' of trial documents,
-  nct_ids: 'array' of trial identifiers,
-  recordsTotal: 'number' of total trials matching first search term,
-  recordsFiltered: 'number' of trials after subsequent term(s) applied,
-  sitesAvailable: 'number' of sites participating in trials meeting location sort criteria. 
-}
-```
-A request that produces no results will return a statusCode 200 but will have an empty array in the `data` property of the response object and -1 `recordsTotal`.
-
-The server will respond with a statusCode >= 400 and a JSON object with `error` and `message` properties if the request was issued impropertly.
-```
-// Example error response:
-{error: 'failed', message:'Request denied.'}
-```
 ##### Additional Request Properties
 There are a number of optional properties developers can specify to control the response to the `/trials` POST request.
 
@@ -186,6 +198,13 @@ There are a number of optional properties developers can specify to control the 
 	biomarker: 1,
 	investigator: 1
 }
+
+```
+
+### POST /trials
+The `/trials` endpoint combines `/find` and `/fetch` in one shot. 
+
+``
 
 // Example request
 $.ajax({
