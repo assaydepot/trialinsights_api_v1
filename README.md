@@ -331,7 +331,7 @@ Works just like `/trials` endpoint but return analysis instead of trials. The ty
 - drug
 - target
 - diseases
-+ many more TBD
++ many more forthcoming...
 
 ```
 Query using the `agency_class` recipe  to return the detail aggregate analysis of facet value counts found in trial documents connected to `queryId` for the specific facet.
