@@ -2,10 +2,12 @@
 Search and Analysis API for Trial Insights Clinical Trial Search, Intelligence, and Surveillance
 
 ## Overview
-The API is comprised of a [Data Access API](#data-access-api) for querying clinical trials and rendering trial documents and an [Aggregate Analysis API](#aggregate-analysis-api) for analyzing and computing statistics over collections of clinical trial documents.
+The API is comprised of a [Trials API](#data-access-api) for querying clinical trials and rendering trial documents, an [Investigators API](#investigator-access-api) with extended annotation for clinical trial investigators, and an [Aggregate Analysis API](#aggregate-analysis-api) for analyzing and computing statistics over collections of clinical trials and related investigators.
 
 ### Authentication
-Access to app.trialiinsights.com is relies on `api_key` property in the body of the *POST* or as a url query parameter `?api_key=key`. To generate a key go to settings for your account in the app and scroll down to the bottom. There you copy/paste the generated key.
+Access to https://app.trialiinsights.com/api/v1/ endpoints requires an `api_key`. Request an API Key at: [Trial Insights API Key Request](mailto:ron@scientist.com)
+
+Once you have the key, submit your request using the `Trialinsights-Api-Key` custom header. Alternatively, you can include the property in the body of the *POST* `{api_key: "provided-key"}` or as a url query parameter `?api_key=key`. 
 
 All endpoints are available at https://app.trialinsights.com/api/v1
 
@@ -127,8 +129,6 @@ There are a number of optional properties developers can specify to control the 
 | sort | object | See below | An object describing the request sort behavior. The default is a descending `desc` sort. Specify  `direction: "asc"` to sort ascending. Additional sort values are: last_update_posted, start_date, completion_date |
 | location | object | null | An object specifying `country`, `city`, `state`. By specifying a `location` the sort request property is ignored and the resulting list of trials is sorted in ascending geographic distance from the supplied location. |
 | fields | object | See below | An object specifying which fields to include for each document in the response object. |
-| queryId | String | | A string identifier returned in the response body of a prior request. If supplied, the server will bypass the search algorithm and use the result cached from the original request. If the supplied `queryId` is valid the `values` property is not required. |
-| output | String | JSON | Specify the response output format. Valid requests are `html`, `pdf`, or `html`. |
 
 ```
 // Default sort object
@@ -253,18 +253,18 @@ Certain facets such as "Facility" and "Investigators" have a large number of uni
 ```
 ### GET /facets/:facet
 
-Returns Picklist of available facet “values” for requested :facet
+Returns Picklist of available facet “values” for requested :facet and global counts of occurrence in trials.
 ```
 // Request: /facets/phase
 // Response:
-{"phase":["Early Phase 1", "Phase 1", "Phase 1/Phase 2", "Phase 2", "Phase 2/Phase 3", "Phase 3", "Phase 4", "N/A"]}
+{'Phase 1': 267, 'Phase 2': 213, 'Phase 3': 411, ...}
 ```
 
 ## Aggregate Analysis API
 The aggregate analysis API builds on the data access API. However, in lieu of trial lists and documents, the endpoints calculate aggregate values for entire collections of trial documents resulting from searches. 
 
-### GET /:queryId/profile[?facet=facet]
-Use the `queryId` returned from the `/trials` endpoint to access additional properties about the aggregate analysis of the trials that met the search criteria.
+### POST /profile[?facet=facet]
+Use the request object for `/trials` endpoint to access additional properties about the aggregate analysis of the trials that met the search criteria.
 
 ```
 // Example card_values response
@@ -386,6 +386,7 @@ The successful response is a JSON object with two properties: `ok` and `deleted`
 - July 14, 2020
 Removed `queryId` from POST `/trials` response object and GET `/trials` request.
 Updated default `fields`.
+Response object is only JSON.
 
 - December 16, 2018
 
