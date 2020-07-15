@@ -11,14 +11,11 @@ Once you have the key, submit your request using the `Trialinsights-Api-Key` cus
 
 All endpoints are available at https://app.trialinsights.com/api/v1
 
-## Data Access API
-Use the __Data Access API__ to submit queries for relevant clinical trials and receive sorted, JSON formatted documents to be rendered by your application. In addition to the initial page of results, the API returns a query identifier used on subequent requests to to control paging, sorting, and requested fields of documents to be rendered by your app. 
+## Trials API
+Use the __Trials API__ to submit queries for relevant clinical trials and receive sorted, JSON formatted documents to be rendered by your application. In addition to the initial page of results the response object includes `recordsTotal` and the `nct_ids` array of clinical trial identifiers. Query parameters inclue options for sorting, paging, and selecting only requested fields.
 
-### POST /trials
-Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
-
-#### Request Body
-The required property is an array of objects whose property name is `values`. Each entry in the array is an object with two properties: `name` and `value`.  
+### POST /find
+Post an object containing a `values` property which is an array of terms. Each term consists of a `name` and a `value`. The [table](#primary-search-and-secondary-search-names) below describes the valid values for `name/value`. The server responds with an object with a `recordsFiltered` number for the total documents found and `nct_ids` array of trial identifiers. Use this information to request pages of documents using the `/fetch` endpoint.
 
 ```
 // The following example values entry returns 
@@ -30,9 +27,6 @@ The required property is an array of objects whose property name is `values`. Ea
   }]
 }
 ```
-
-A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the table below.
-
 ##### Primary Search and Secondary Search Names
 The valid strings for the `name` property of a name/value object is shown in the table here:
 
@@ -62,6 +56,23 @@ __The values array must include at least 1 primary search name/value and can hav
   }]
 }
 ```
+
+### POST /fetch
+
+### POST /trials
+Returns an object containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
+
+containing an array for the initial page of trial documents meeting search criteria and some meta information to allow the client app to request subsequent pages. 
+
+
+#### Request Body
+The required property is an array of objects whose property name is `values`. Each entry in the array is an object with two properties: `name` and `value`.  
+
+
+
+A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the table below.
+
+
 
 ###### When to use "other_terms" as a Primary Search term
 Specifying `name: "other_terms"` causes the search engine to include additional text fields found in trial documents in its effort to find trials. Additional fields include the `title` and `description` whereas limiting the name to `drug` for example will restrict the search to only the `intervention`, `other_names`, and `keyword` areas of the trial documents. __For maximum recall, use `other_terms`. For more specific recall, use the appropriate primary search `name` specifier such as `diseases` when searching disease or `drug` when searching using drug names.__
