@@ -19,7 +19,7 @@ Post an object containing a `values` property which is an array of terms. Each t
 
 A `name` is a string value corresponding to a valid __primary search__ or __secondary search__ name shown in the [table below](#primary-search-and-secondary-search-names). The server responds with an object with a `recordsFiltered` number for the total documents found and `nct_ids` array of trial identifiers. Use this information to request pages of documents using the `/fetch` endpoint.
 
-A `value` is your keyword(s) or a valid value of a clinical trial property such as `Phase 1` for _Phase_. 
+A `value` is your keyword or a valid value of a clinical trial property such as `Phase 1` for _Phase_. 
 
 ```
 // The following example values entry returns 
@@ -27,7 +27,7 @@ A `value` is your keyword(s) or a valid value of a clinical trial property such 
 {
   values: [{
     name: "other_terms",
-    value: "breast cancer|prostate cancer"
+    value: "breast cancer"
   }]
 }
 
