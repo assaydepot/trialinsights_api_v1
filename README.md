@@ -153,6 +153,9 @@ There are a number of optional properties developers can specify to control the 
 | location | object | null | An object specifying `country`, `city`, `state`. By specifying a `location` the sort request property is ignored and the resulting list of trials is sorted in ascending geographic distance from the supplied location. |
 | fields | object | See below | An object specifying which fields to include for each document in the response object. |
 
+###### Field specifiations
+To maximize throughput you can limit the number of fields returned with each document. If you don't specify a `fields` property, then the default fields show below will be returned for _each_ document.
+
 ```
 // Default sort object
 {sort:'study_first_posted', direction: 'desc'}
@@ -200,11 +203,13 @@ There are a number of optional properties developers can specify to control the 
 }
 
 ```
+### GET /trials?nct_ids[]=NCT012345678
+Returns an individual trial document.
 
 ### POST /trials
 The `/trials` endpoint combines `/find` and `/fetch` in one shot. 
 
-``
+```
 
 // Example request
 $.ajax({
@@ -258,12 +263,6 @@ To get trials sorted by distance from a location, use `sort: "distance"` and inc
 }
 ```
 
-
-### GET /:id/trials
-Returns an individual trial document.
-
-If `:id` resolves to a clinical trial identifier, that trial document will be returned.
-
 ### GET	/facets
 Returns an overview of available facet “keys”.
 
@@ -290,47 +289,54 @@ Returns Picklist of available facet “values” for requested :facet and global
 {'Phase 1': 267, 'Phase 2': 213, 'Phase 3': 411, ...}
 ```
 
+## Investigator API
+
+### GET /golden_investigator
+Query the investigator database. Available parameters include:
+
+- _id
+- firstname, lastname, 
+- country, city, state
+- nct_ids (array)
+
+### GET /investigators?nct_id=NCT01234567
+Return all investigators associated to the provided `nct_id`.
+
+### POST /activity_history
+Post the results of the `/trials` endpoint to `/activity_history` to get a summary of all investigators involved in trials related to the query. The response object will include an object `investigators`. 
+
+```
+// example request body
+{docs: [array of trials from /fetch], recipe: ['investigators']}
+```
+
 ## Aggregate Analysis API
-The aggregate analysis API builds on the data access API. However, in lieu of trial lists and documents, the endpoints calculate aggregate values for entire collections of trial documents resulting from searches. 
+The aggregate analysis API builds on the Trial API and Investigator API. However, in lieu of trial lists and documents, the endpoints calculate aggregate values for entire collections of trial documents resulting from searches. 
 
-### POST /profile[?facet=facet]
-Use the request object for `/trials` endpoint to access additional properties about the aggregate analysis of the trials that met the search criteria.
-
-```
-// Example card_values response
-{
-  nct_ids: [ array of trial identifiers ],
-  activity_history: { object of time series and aggregate statistics about the set of trials },
-  card: { object of aggregate statistics for each facet and its values },
-  card_values: {
-	"agency_class": 4,
-	"completion_date": 469,
-	"diseases": 258,
-	"has_expanded_access": 1,
-	"intervention_type": 15,
-	"interventions": 2503,
-	"lead_sponsor": 647,
-	"location_countries": 69,
-	"overall_status": 12,
-	"phase": 8,
-	"site": 5062,
-	"start_date": 492,
-	"structured_eligibility": 6,
-	"study_design_info": 8,
-	"study_type": 4,
-	"collaborator": 594,
-	"drug": 249,
-	"target": 147,
-	"biomarker": 40,
-	"biospec_retention": 3
-  }
-}
+### POST /profile
+Works just like `/trials` endpoint but return analysis instead of trials. The type of analysis is determined by a `recipe` property. Some _recipe_ examples are:
 
 ```
-Query using the `?facet=` parameter to return the detail aggregate analysis of facet value counts found in trial documents connected to `queryId` for the specific facet.
+// example request body
+{docs: [array of trials from /fetch], recipe: ['analyze', 'drug', 'target', 'lead_sponsor', 'investigators']}
+```
+#### Some example recipe values:
+- analyze
+- investigators
+- investigator_activity
+- landscape_by_sponsor
+- all_drugs
+- phase
+- lead_sponsor
+- drug
+- target
+- diseases
++ many more TBD
 
 ```
-// Example /:id/profile?facet=agency_class
+Query using the `agency_class` recipe  to return the detail aggregate analysis of facet value counts found in trial documents connected to `queryId` for the specific facet.
+
+// Example /profile?recipe[]=agency_class
 {
    "card":"agency_class",
    "draw":"0",
@@ -361,84 +367,15 @@ Query using the `?facet=` parameter to return the detail aggregate analysis of f
 }
 ```
 
-### POST /portfolio
-Add a query to a portfolio named `portfolio` of results.
-
-| name  | type | value |
-| ------------- | ------------- | --------------------------------------- |
-| portfolio | String | The name of the portfolio. POST multiple queries with the same `portfolio`string to create a group of associated queries. |
-| description | String | A string describing the portfolio. |
-| feeds | String or Array | An array of email addresses of subscribers eligible to view and receive alerts regarding changes to this portfolio. If string 'private' is provided, the portfolio will be private to the owner creating the portfolio. |
-
-An sample array of POST objects is found [here](https://raw.githubusercontent.com/rranauro/trialio/master/rare_disease.json)
-
-> Remember: The endpoint is asynchronous so that each request should receive its response before sending the next request.
-
-The successful POST returns `ok` and `id` of the portfolio` object.
-```
-// Example response object:
-{ok: true, id: "12345678"}
-```
-An error response will include a statusCode >= 400 and a JSON object with `error` and `message` properties.
-```
-// Example error response:
-{error: 'failed', message:'Request denied.'}
-```
-### GET /portfolio?portfolio=name
-Initiate a re-computation of an existing portfolio of queries where `name` is a string name of the portfolio to compute.
-
-The successful response is a JSON object with two properties: `ok` and `collections`.
-
-```
-// Example response object:
-{ok: true, collections: 17}
-```
-An error response will include a statusCode >= 400 and a JSON object with `error` and `message` properties.
-
-```
-// Error response object:
-{error: 'failed', message:'Request denied.'}
-```
-
-### DELETE /portfolio?portfolio=name
-Removes all entries with `portfolio=name` where `name` is a string name of the portfolio to remove.
-
-__This operation cannot be reversed.__
-
-The successful response is a JSON object with two properties: `ok` and `deleted`.
-
-```
-// Example success response object.
-{ok: true, deleted: 17}
-```
 
 **Notes:**
 - July 14, 2020
 Removed `queryId` from POST `/trials` response object and GET `/trials` request.
 Updated default `fields`.
 Response object is only JSON.
-
-- December 16, 2018
-
-Consolidated search API with output property. 
-
-- June 14, 2018
-
-Updated and merged Data and Aggregate API docs with Portfolio and Patient Report API doc.
-
-- May 21, 2018
-
-The `values` property is defined to be an array of `name/value` pairs.
-
-- April 17, 2018
-
-The *api_key* is acquired manually.
-
-The requestors logo can be substituted for the Trialinsights logo in the HTML and PDF versions by prior arrangement.
-
-The requestors *name* and *affiliation* used in the report can be added to the request if HTML or PDF responses are requested. Otherwise, the user and affiliation of the owner of the *api_key* will be used for those outputs.
-
-If an unrecognized country/city/state is requested, the location search will not work. An API for confirming coordinates is planned.
+Added /find, /fetch
+Added Investigators API
+Removed /portfolio endpoints
 
 #
 app.trialinsights.com and trialinsights.com are trademarks of Incite Advisors, Inc. and Scientist.com
