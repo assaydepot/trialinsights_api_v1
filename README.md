@@ -14,6 +14,24 @@ All endpoints are available at https://app.trialinsights.com/api/v1
 ## Trials API
 Use the __Trials API__ to submit queries for relevant clinical trials and receive sorted, JSON formatted documents to be rendered by your application. In addition to the initial page of results the response object includes `recordsTotal` and the `nct_ids` array of clinical trial identifiers. Query parameters inclue options for sorting, paging, and selecting only requested fields.
 
+### GET /find?value | values | values & names
+Responds with an array of clinical trial identifier that match the query.
+
+Queries are composed of a simple `value=` free text term. Search specific fields using the `name=` and `value=` syntax. Queries composed of compound terms can be created from arrays of `names=` and `values=` where the corrsponding name/value pair is constructed based on the ordering of the terms. 
+ 
+```
+// fetch amnesia trials using free text
+/find?value=amnesia
+
+// fetch trials with amnesia only in diseases
+/find?name=diseases&value=amnesia
+
+// fetch phase 1 amnesia trials
+/find?names[]=other_terms&names[]=phase&values[]=amnesia&values[]=Phase+1
+```
+
+__
+
 ### POST /find
 Post an object containing a `values` property which is an array of terms. Each term consists of a `name` and a `value`. Each entry in the array is an object with two properties: `name` and `value`.  
 
